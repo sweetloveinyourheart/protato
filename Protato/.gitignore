@@ -1,0 +1,8 @@
+.vs
+/Library
+/Logs
+/UserSettings
+.vsconfig
+Assembly-CSharp.*
+Protato.sln
+/obj

@@ -1851,8 +1851,9 @@ MonoBehaviour:
   moveSpeed: 5
   maxHp: 100
   hp: 100
-  pushForce: 1
+  dieEffect: {fileID: 3848422507789823271, guid: 387b0581be9884a108a11e5a74f9b779, type: 3}
   healthBar: {fileID: 1843880096003233949}
+  supply: {fileID: 6311146762901010961, guid: 8a8e081d4fbfa4e968bae10b7911c9fc, type: 3}
 --- !u!114 &1843880096003233949
 MonoBehaviour:
   m_ObjectHideFlags: 0

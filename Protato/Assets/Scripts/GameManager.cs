@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject monsterPrefab;
     [SerializeField] Transform target;
-    [SerializeField] float moveSpeed = 5f;
     [SerializeField] float spawnDelay = 5f;
     [SerializeField] int numberOfMonsters = 10;
     [SerializeField] Transform[] spawnPoints;
@@ -29,7 +28,7 @@ public class GameManager : MonoBehaviour
     private void SpawnMonster()
     {
         // Generate a random position from spawn points
-        int spawnPointIndex = Random.Range(0, 3);
+        int spawnPointIndex = Random.Range(0, 4);
         Transform spawnPoint = spawnPoints[spawnPointIndex];
 
         Vector2 spawnPosition = new Vector2(spawnPoint.position.x, spawnPoint.position.y);
@@ -37,7 +36,6 @@ public class GameManager : MonoBehaviour
         GameObject monster = Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
         Monster monsterMovement = monster.GetComponent<Monster>();
         monsterMovement.target = target;
-        monsterMovement.moveSpeed = moveSpeed;
     }
 
 }

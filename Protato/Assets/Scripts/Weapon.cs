@@ -2,37 +2,97 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class Weapons
+{
+    public static string Axe = "Axe";
+    public static string Shotgun = "Shotgun";
+}
+
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] float damage = 10f;
     [SerializeField] Character character;
+    [SerializeField] Transform wpPosition;
 
-    CircleCollider2D circleCollider2D;
+    GameObject weapon;
+
+    public string currentWeapon = Weapons.Axe;
 
     // Start is called before the first frame update
     void Start()
     {
-        circleCollider2D = GetComponent<CircleCollider2D>();
+        SpawnPrefab(currentWeapon);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(character.isAttacking)
+        switch(currentWeapon)
         {
-            circleCollider2D.enabled = true;
-        } else
-        {
-            circleCollider2D.enabled = false;
+            case "Axe":
+                HandleAxe();
+                return;
+            case "Shotgun":
+                HandleShotgun();
+                return;
+
+            default:
+                return;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void HandleAxe()
     {
-        Monster monster = collision.gameObject.GetComponent<Monster>();
-        if(monster)
+        Axe axe = weapon.GetComponent<Axe>();
+        if(axe)
         {
-            monster.TakeDamage(damage);
+            axe.UpdateWPState(character.isAttacking);
         }
+    }
+
+    void HandleShotgun()
+    {
+        Shotgun shotgun = weapon.GetComponent<Shotgun>();
+        if (shotgun)
+        {
+            shotgun.UpdateWPState(character.isAttacking, character.isFacingRight);
+        }
+    }
+
+    void SpawnPrefab(string prefabName)
+    {
+        // Remove previos wp
+        DeletePrefab();
+
+        string path = "Weapons/" + prefabName;
+        // Load the prefab by its name from the Resources folder
+        GameObject prefab = Resources.Load<GameObject>(path);
+
+        // Check if the prefab was loaded successfully
+        if (prefab != null)
+        {
+            // Instantiate the prefab at a specific position and rotation
+            GameObject instantiatedPrefab = Instantiate(prefab, wpPosition.position, wpPosition.rotation, wpPosition);
+
+            instantiatedPrefab.transform.parent = wpPosition;
+            weapon = instantiatedPrefab;
+        }
+        else
+        {
+            Debug.LogError("Prefab not found: " + prefabName);
+        }
+    }
+
+    void DeletePrefab()
+    {
+        if (weapon != null)
+        {
+            Destroy(weapon);
+        }
+    }
+
+    public void PickupWeapon(string wp)
+    {
+        SpawnPrefab(wp);
+        currentWeapon = wp;
     }
 }

@@ -4,14 +4,15 @@ using System.Collections;
 public class Monster : MonoBehaviour
 {
     public Transform target;
-    public float moveSpeed = 5f;
     private bool isMoving;
 
     [SerializeField] float maxHp = 100f;
     [SerializeField] float hp = 100f;
-    [SerializeField] float pushForce = 1f;
+    [SerializeField] float moveSpeed = 5f;
 
+    [SerializeField] GameObject dieEffect;
     [SerializeField] MonsterHealthbar healthBar;
+    [SerializeField] Supply supply;
 
     private Rigidbody2D rb;
 
@@ -50,20 +51,28 @@ public class Monster : MonoBehaviour
         {
             // Apply a force to push the monster back
             Vector2 pushDirection = (target.position.x < transform.position.x) ? transform.right : -transform.right;
-            isMoving = true; // Disable Move temporarily
             StartCoroutine(PushBackAndEnableMovement(pushDirection));
         }
     }
 
     private IEnumerator PushBackAndEnableMovement(Vector2 pushDirection)
     {
-        rb.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
         yield return new WaitForSeconds(0.1f);
         isMoving = false; // Re-enable Move
     }
 
     private void Die()
     {
+        Instantiate(dieEffect, transform.position, Quaternion.identity);
+
+        // Randomly determine whether to spawn a supply or not
+        float spawnChance = Random.value;
+        Debug.Log(spawnChance);
+        if (spawnChance <= supply.spawnChance)
+        {
+            Instantiate(supply, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
     }
 }

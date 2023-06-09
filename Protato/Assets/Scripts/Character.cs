@@ -4,11 +4,11 @@ using System.Collections;
 public class Character : MonoBehaviour
 {
     public bool isAttacking = false;
+    public bool isFacingRight = true;
 
     [SerializeField] float moveSpeed = 5f;
 
     private Rigidbody2D rb;
-    private bool isFacingRight = true;
     private Animator animator;
     private float attackSpeed = 0.3f;
 

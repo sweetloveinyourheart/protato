@@ -1376,11 +1376,11 @@ RectTransform:
   m_Children:
   - {fileID: 6161134829160068698}
   m_Father: {fileID: 8429888356944032157}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3513.88, y: 1956.48}
+  m_AnchoredPosition: {x: 3513.8796, y: 1956.4799}
   m_SizeDelta: {x: 1750, y: 984}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6161134828781287813
@@ -1752,7 +1752,6 @@ GameObject:
   - component: {fileID: 7193142263282419791}
   - component: {fileID: 5918905646272039319}
   - component: {fileID: 7193142263282419790}
-  - component: {fileID: 1843880096003233949}
   m_Layer: 0
   m_Name: Monster_01
   m_TagString: Untagged
@@ -1774,6 +1773,7 @@ Transform:
   m_Children:
   - {fileID: 8136978734244478348}
   - {fileID: 6396969274487058006}
+  - {fileID: 7535734154282747487}
   - {fileID: 6161134828781287816}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1848,27 +1848,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  moveSpeed: 5
   maxHp: 100
-  hp: 100
+  moveSpeed: 5
+  damage: 5
   dieEffect: {fileID: 3848422507789823271, guid: 387b0581be9884a108a11e5a74f9b779, type: 3}
-  healthBar: {fileID: 1843880096003233949}
+  healthBar: {fileID: 7590667396445958801}
   supply: {fileID: 6311146762901010961, guid: 8a8e081d4fbfa4e968bae10b7911c9fc, type: 3}
---- !u!114 &1843880096003233949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7220645798144567806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47a8379b41c5e470babe6b3ef384118b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBarCanvas: {fileID: 6161134828781287813}
-  slider: {fileID: 6161134829160068693}
-  offset: 1
+  hp: 100
 --- !u!1 &7389567757902940453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1965,6 +1951,53 @@ Transform:
   m_Father: {fileID: 8654481315163629611}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8996401374728073143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7535734154282747487}
+  - component: {fileID: 7590667396445958801}
+  m_Layer: 0
+  m_Name: HealthBar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7535734154282747487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8996401374728073143}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.972968, y: -0.93809986, z: 27.744434}
+  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8429888356944032157}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7590667396445958801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8996401374728073143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47a8379b41c5e470babe6b3ef384118b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarCanvas: {fileID: 6161134828781287813}
+  slider: {fileID: 6161134829160068693}
+  offset: 1
 --- !u!1 &9075011322315704302
 GameObject:
   m_ObjectHideFlags: 0

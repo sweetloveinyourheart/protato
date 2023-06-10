@@ -12,6 +12,15 @@ export const options: Options = {
                 name: "Protato Game",
                 url: "https://logrocket.com"
             },
+        },
+        components: {
+            securitySchemes: {
+                BearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT"
+                }
+            }
         }
     },
     apis: ['./**/*.ts'], // for dev mode

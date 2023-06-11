@@ -7,13 +7,15 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import routers from './routers';
 import { GlobalException } from './middlewares/exception';
+import cors from 'cors'
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 
-app.use(bodyParser.json());
+app.use(cors())
+app.use(bodyParser.json())
 
 // Config mongo connection
 const connectionString = process.env.MONGO_URI as string

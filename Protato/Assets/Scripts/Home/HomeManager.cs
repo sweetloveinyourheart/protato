@@ -6,16 +6,6 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.SceneManagement;
 using SimpleJSON;
 
-[System.Serializable]
-public class ProfileData
-{
-    public string _id;
-    public string email;
-    public string username;
-    public string createdAt;
-    public int __v;
-}
-
 public class HomeManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI usernameText;
@@ -62,5 +52,10 @@ public class HomeManager : MonoBehaviour
             MatchManager.Instance.matchId = matchId;
             SceneManager.LoadScene("Game");
         }
+    }
+
+    public void GoToMatchHistory()
+    {
+        SceneManager.LoadScene("History");
     }
 }

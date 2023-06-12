@@ -1,7 +1,7 @@
-import { LoginDto, TokenResponse } from "../dto/login.dto";
+import { LoginDto, TokenResponse } from "../dto/auth/login.dto";
 import { MessageDto } from "../dto/message.dto";
-import { RegisterDto } from "../dto/register.dto";
-import { ValidateDto } from "../dto/validate.dto";
+import { RegisterDto } from "../dto/auth/register.dto";
+import { ValidateDto } from "../dto/auth/validate.dto";
 import { checkValidationCode, storeValidationCode } from "../libs/cache";
 import { generateUsername, generateValidationCode } from "../libs/generator";
 import { sendMail } from "../libs/mailer";

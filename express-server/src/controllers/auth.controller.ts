@@ -60,10 +60,10 @@
 
 import { NextFunction, Request, Response } from "express";
 import * as authServices from '../services/auth.service'
-import { RegisterDto } from "../dto/register.dto";
 import { validationResult } from "express-validator";
-import { ValidateDto } from "../dto/validate.dto";
-import { LoginDto } from "../dto/login.dto";
+import { RegisterDto } from "../dto/auth/register.dto";
+import { ValidateDto } from "../dto/auth/validate.dto";
+import { LoginDto } from "../dto/auth/login.dto";
 
 export async function login(request: Request, response: Response, next: NextFunction) {
   try {

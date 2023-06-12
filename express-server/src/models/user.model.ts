@@ -1,32 +1,3 @@
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         id:
- *           type: string
- *           description: The user's ID
- *         email:
- *           type: string
- *           format: email
- *           description: The user's email address
- *         password:
- *           type: string
- *           description: The user's password
- *         username:
- *           type: string
- *           description: The user's username
- *         isVerified:
- *           type: boolean
- *           description: Indicates if the user is verified
- *         createdAt:
- *           type: string
- *           format: date-time
- *           description: The user's creation date and time
- */
-
 import { Schema, model, Document } from 'mongoose'
 
 export interface User extends Document {

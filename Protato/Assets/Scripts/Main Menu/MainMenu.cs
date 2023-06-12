@@ -12,7 +12,22 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject loadingObj;
     string currentPopup = "Login";
 
-    public void OnRegisterClick()
+    public static MainMenu Instance { get; private set; }
+
+    void Start()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+        public void OnRegisterClick()
     {
         login.gameObject.SetActive(false);
         register.gameObject.SetActive(true);

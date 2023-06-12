@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Security.Cryptography;
 using System.Text;
 using SimpleJSON;
 using UnityEngine;
@@ -9,20 +10,25 @@ public class Login : MonoBehaviour
 {
     [SerializeField] GameObject form;
 
-    MainMenu mainMenu;
     string email = "";
     string password = "";
 
     // Start is called before the first frame update
     void Start()
     {
-        mainMenu = FindObjectOfType<MainMenu>();
     }
 
     public void OnLoginClick()
     {
-        LoginRq();
+        form.SetActive(false);
+        MainMenu.Instance.ShowLoading(true);
 
+        // Create a JSON object 
+        JSONObject data = new JSONObject();
+        data["email"] = email;
+        data["password"] = password;
+
+        StartCoroutine(ApiContext.Instance.Post("/auth/login", data, HandleResponse));
     }
 
     public void HandleEmailEdit(string str)
@@ -35,31 +41,21 @@ public class Login : MonoBehaviour
         password = str;
     }
 
-    void LoginRq()
+    void HandleResponse(ApiResponse res)
     {
-        form.SetActive(false);
-        mainMenu.ShowLoading(true);
-
-        // Create a JSON object 
-        JSONObject data = new JSONObject();
-        data["email"] = email;
-        data["password"] = password;
-
-        ApiResponse res = ApiContext.Instance.Post("/auth/login", data);
-
+        MainMenu.Instance.ShowLoading(false);
         form.SetActive(true);
-        mainMenu.ShowLoading(false);
 
         if (res.data != null)
         {
             string accessToken = res.data["accessToken"];
             ApiContext.Instance.accessToken = accessToken;
             SceneManager.LoadScene("Home");
-        } else
+        }
+        else
         {
             string errorMessage = res.error;
-            mainMenu.ShowErrorPopup(errorMessage, "Login");
+            MainMenu.Instance.ShowErrorPopup(errorMessage, "Login");
         }
-
     }
 }

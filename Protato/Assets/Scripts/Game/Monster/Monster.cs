@@ -90,6 +90,7 @@ public class Monster : MonoBehaviour
             Instantiate(supply, transform.position, Quaternion.identity);
         }
 
+        GameManager.Instance.MonsterDestroyed();
         Destroy(gameObject);
     }
 

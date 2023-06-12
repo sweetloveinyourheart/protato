@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using SimpleJSON;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class ValidateAccount : MonoBehaviour
 {
@@ -13,12 +7,11 @@ public class ValidateAccount : MonoBehaviour
 
     string validationCode;
     string email;
-    MainMenu mainMenu;
 
     // Start is called before the first frame update
     void Start()
     {
-        mainMenu = FindObjectOfType<MainMenu>();
+        
     }
 
     // Update is called once per frame
@@ -39,33 +32,30 @@ public class ValidateAccount : MonoBehaviour
 
     public void Verify()
     {
-        ValidateRq();
-    }
-
-    void ValidateRq()
-    {
         form.SetActive(false);
-        mainMenu.ShowLoading(true);
+        MainMenu.Instance.ShowLoading(true);
 
         // Create a JSON object 
         JSONObject data = new JSONObject();
         data["email"] = email;
         data["code"] = validationCode;
 
-        ApiResponse res = ApiContext.Instance.Post("/auth/verify-account", data);
+        StartCoroutine(ApiContext.Instance.Post("/auth/verify-account", data, HandleResponse));
+    }
 
+    void HandleResponse(ApiResponse res)
+    {
         form.SetActive(true);
-        mainMenu.ShowLoading(false);
+        MainMenu.Instance.ShowLoading(false);
 
         if (res.data != null)
         {
-            mainMenu.GoLoginAfterVerify(email);
+            MainMenu.Instance.GoLoginAfterVerify(email);
         }
         else
         {
             string errorMessage = res.error;
-            mainMenu.ShowErrorPopup(errorMessage, "Verify");
+            MainMenu.Instance.ShowErrorPopup(errorMessage, "Verify");
         }
-
     }
 }

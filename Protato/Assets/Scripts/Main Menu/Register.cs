@@ -1,22 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Networking;
 using UnityEngine;
 using SimpleJSON;
-using System.Text;
 
 public class Register : MonoBehaviour
 {
     [SerializeField] GameObject form;
 
-    MainMenu mainMenu;
     string email = "";
     string password = "";
 
     // Start is called before the first frame update
     void Start()
     {
-        mainMenu = FindObjectOfType<MainMenu>();
+
     }
 
     // Update is called once per frame
@@ -37,33 +32,30 @@ public class Register : MonoBehaviour
 
     public void CreateAccount()
     {
-        RegisterRq();
-    }
-
-    void RegisterRq()
-    {
         form.SetActive(false);
-        mainMenu.ShowLoading(true);
+        MainMenu.Instance.ShowLoading(true);
 
         // Create a JSON object 
         JSONObject data = new JSONObject();
         data["email"] = email;
         data["password"] = password;
 
-        ApiResponse res = ApiContext.Instance.Post("/auth/register", data);
+        StartCoroutine(ApiContext.Instance.Post("/auth/register", data, HandleResponse));
+    }
 
+    void HandleResponse(ApiResponse res)
+    {
+        MainMenu.Instance.ShowLoading(false);
         form.SetActive(true);
-        mainMenu.ShowLoading(false);
 
         if (res.data != null)
         {
-            mainMenu.ShowVerifyForm(email);
+            MainMenu.Instance.ShowVerifyForm(email);
         }
         else
         {
             string errorMessage = res.error;
-            mainMenu.ShowErrorPopup(errorMessage, "Register");
+            MainMenu.Instance.ShowErrorPopup(errorMessage, "Register");
         }
-
     }
 }

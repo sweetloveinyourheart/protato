@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] CharacterHealthbar healthBar;
     [SerializeField] float maxHp = 100f;
+    [SerializeField] GameObject dieEffect;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -93,6 +94,8 @@ public class Character : MonoBehaviour
 
     private void Die()
     {
+        Instantiate(dieEffect, transform.position, Quaternion.identity);
+        GameManager.Instance.PlayerDead();
         Destroy(gameObject);
     }
 }

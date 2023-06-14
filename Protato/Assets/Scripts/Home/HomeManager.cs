@@ -44,6 +44,11 @@ public class HomeManager : MonoBehaviour
         StartCoroutine(ApiContext.Instance.Post(createMatchUrl, HandleSingleMatchResponse));
     }
 
+    public void EnterMultiplayer()
+    {
+        SceneManager.LoadScene("Find Match");
+    }
+
     void HandleSingleMatchResponse(ApiResponse res)
     {
         if(res.data != null)

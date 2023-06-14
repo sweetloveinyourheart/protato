@@ -3,12 +3,12 @@ using System.Collections;
 
 public class Character : MonoBehaviour
 {
-    public bool isAttacking = false;
-    public bool isFacingRight = true;
+    [HideInInspector] public bool isAttacking = false;
+    [HideInInspector] public bool isFacingRight = true;
 
     [SerializeField] float moveSpeed = 5f;
-    [SerializeField] CharacterHealthbar healthBar;
     [SerializeField] float maxHp = 100f;
+    [SerializeField] CharacterHealthbar healthBar;
     [SerializeField] GameObject dieEffect;
 
     private Rigidbody2D rb;
@@ -38,13 +38,19 @@ public class Character : MonoBehaviour
         UpdateAnimation(movement);
     }
 
-    private void Move(Vector2 movement)
+    public void InitPos(float x, float y)
+    {
+        Vector3 newPosition = new Vector3(x, y, transform.position.z);
+        transform.position = newPosition;
+    }
+
+    protected void Move(Vector2 movement)
     {
         Vector2 velocity = movement * moveSpeed * Time.deltaTime;
         rb.MovePosition(rb.position + velocity);
     }
 
-    private void FlipCharacter(float moveX)
+    protected void FlipCharacter(float moveX)
     {
         if (moveX > 0 && !isFacingRight)
         {
@@ -64,7 +70,7 @@ public class Character : MonoBehaviour
         transform.localScale = scale;
     }
 
-    private void UpdateAnimation(Vector2 movement)
+    protected void UpdateAnimation(Vector2 movement)
     {
         bool isMoving = movement.magnitude > 0;
         animator.SetBool("isRunning", isMoving);

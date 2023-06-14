@@ -14,13 +14,27 @@ export async function createSingleMatch(userId: string): Promise<MatchDto> {
     return newMatch
 }
 
+export async function createMultipleMatch(players: string[]): Promise<MatchDto> {
+    const results = players.map((p) => ({
+        player: p,
+        score: 0
+    }))
+
+    const newMatch = await MatchModel.create({
+        results,
+        players
+    })
+    return newMatch
+}
+
+
 export async function getMatchHistory(userId: string): Promise<MatchDto[]> {
     const matches = await MatchModel
         .find({ players: userId })
         .sort({ createdAt: -1 })
         .limit(20)
 
-    if(!matches) {
+    if (!matches) {
         throw new Exception({ message: 'Match not found', statusCode: 200 })
     }
 
@@ -33,7 +47,7 @@ export async function getMatchById(matchId: string): Promise<MatchDto> {
         .populate(['players', 'results.player'])
         .select({ "results.player.password": 0, "players.password": 0 })
 
-    if(!match) {
+    if (!match) {
         throw new Exception({ message: 'Match not found', statusCode: 200 })
     }
 

@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import routers from './routers';
 import { GlobalException } from './middlewares/exception';
 import cors from 'cors'
+import "./sockets/udp"
 
 dotenv.config();
 

@@ -36,6 +36,6 @@
  *           description: The user's creation date and time
  */
 
-import { Match } from "../../models/match.model";
+import { Match } from "../../models/match.model"
 
 export interface MatchDto extends Match {}

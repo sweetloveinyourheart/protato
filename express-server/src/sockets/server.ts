@@ -6,7 +6,7 @@ import { playerMove } from './handlers/player.handler';
 import { applicationQuit } from './handlers/application.handler';
 
 const server = dgram.createSocket('udp4');
-const PORT = 3333;
+const PORT = Number(process.env.UDP_SERVER_PORT || 3333);
 
 server.on('message', (message, remote) => {
     const { address, port } = remote

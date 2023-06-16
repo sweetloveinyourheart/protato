@@ -1,5 +1,7 @@
-import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
+dotenv.config();
+
+import express, { Express } from 'express';
 import * as redis from 'redis'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
@@ -11,7 +13,6 @@ import { GlobalException } from './middlewares/exception';
 import cors from 'cors'
 import "./sockets/server"
 
-dotenv.config();
 const port = process.env.PORT;
 const redisHost = process.env.REDIS_HOST;
 const redisPort = process.env.REDIS_PORT;

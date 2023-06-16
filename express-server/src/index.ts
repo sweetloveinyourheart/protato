@@ -12,16 +12,17 @@ import cors from 'cors'
 import "./sockets/server"
 
 dotenv.config();
+const port = process.env.PORT;
+const redisHost = process.env.REDIS_HOST;
+const redisPort = process.env.REDIS_PORT;
 
 const app: Express = express();
-export const client = redis.createClient()
-
-const port = process.env.PORT;
 
 app.use(cors())
 app.use(bodyParser.json())
 
 // Config redis connection
+export const client = redis.createClient({ url: `redis://${redisHost}:${redisPort}` })
 client
     .connect()
     .then(() => console.log('Redis connected'))

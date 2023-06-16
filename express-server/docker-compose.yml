@@ -1,10 +1,55 @@
 version: '3.8'
+
 services:
+  server:
+    hostname: server
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 6789:6789
+    environment:
+      - PORT=6789
+      - MONGO_URI=mongodb://db:27017/protato
+      - JWT_SECRET=secret
+      - EMAIL_HOST=<YOUR_EMAIL_SERVICE_HOST>
+      - EMAIL_USER=<YOUR_EMAIL_SERVICE_USER>
+      - EMAIL_PASSWORD=<YOUR_EMAIL_SERVICE_PASS>
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+      - db
+    networks:
+      - shared-network
+
   redis:
     image: redis
+    hostname: redis
     ports:
       - 6379:6379
     volumes:
       - redis-data:/data
+    networks:
+      - shared-network
+
+  db:
+    image: mongo:latest
+    hostname: db
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - shared-network
+
 volumes:
   redis-data:
+  mongo-data:
+
+networks:
+  shared-network:
+    driver: bridge

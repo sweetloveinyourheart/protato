@@ -3,6 +3,7 @@ import { ClientEventType, MessagePayload } from './payload/message.payload';
 import { findMatch, leaveQueue } from './handlers/find-match.handler';
 import { initMatch } from './handlers/match.handler';
 import { playerMove } from './handlers/player.handler';
+import { applicationQuit } from './handlers/application.handler';
 
 const server = dgram.createSocket('udp4');
 const PORT = 3333;
@@ -27,8 +28,11 @@ server.on('message', (message, remote) => {
         case ClientEventType.InitMatch:
             return initMatch(server, data.matchId)
 
-        case ClientEventType.Move: 
+        case ClientEventType.UpdatePlayerState:
             return playerMove(server, data)
+
+        case ClientEventType.ApplicationQuit:
+            return applicationQuit(server, data)
 
         default:
             return;
@@ -39,5 +43,9 @@ server.on('listening', () => {
     const address = server.address();
     console.log(`⚡️[socket]: UDP Server listening on ${address.address}:${address.port}`);
 });
+
+server.on('close', () => {
+    console.log("UDP Server closed");
+})
 
 server.bind(PORT);

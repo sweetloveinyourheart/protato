@@ -4,6 +4,7 @@ import { UserDto } from '../dto/user/user.dto'
 interface Result {
     player: UserDto
     score: number
+    victory: boolean
 }
 
 export interface Match extends Document {
@@ -15,14 +16,11 @@ export interface Match extends Document {
 
 const ResultSchema = new Schema({
     player: { type: Schema.Types.ObjectId, ref: 'Users' },
-    score: { type: Number }
+    score: { type: Number },
+    victory: { type: Boolean, default: false }
 });
 
 const MatchSchema = new Schema({
-    victory: {
-        type: Boolean,
-        default: false
-    },
     results: {
         type: [ResultSchema],
         required: true

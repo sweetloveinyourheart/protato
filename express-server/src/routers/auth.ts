@@ -1,6 +1,7 @@
 import express from 'express';
 import * as authControllers from '../controllers/auth.controller';
 import { body } from 'express-validator';
+import { AuthGuard } from '../middlewares/jwt';
 const router = express.Router();
 
 router.post(
@@ -22,6 +23,12 @@ router.post(
     body('email').notEmpty().isEmail().withMessage('Email mus be a valid email address'),
     body('code').notEmpty().isLength({ min: 6, max: 6 }).withMessage('Validation code must have 6 character'),
     authControllers.validateAccount
+)
+
+router.delete(
+    '/logout',
+    AuthGuard,
+    authControllers.logout
 )
 
 export default router;

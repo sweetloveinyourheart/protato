@@ -2,7 +2,7 @@ import { LoginDto, TokenResponse } from "../dto/auth/login.dto";
 import { MessageDto } from "../dto/message.dto";
 import { RegisterDto } from "../dto/auth/register.dto";
 import { ValidateDto } from "../dto/auth/validate.dto";
-import { checkValidationCode, storeValidationCode } from "../libs/cache";
+import { checkLoginSession, checkValidationCode, clearLoginSession, saveLoginSession, storeValidationCode } from "../libs/cache";
 import { generateUsername, generateValidationCode } from "../libs/generator";
 import { sendMail } from "../libs/mailer";
 import { comparePassword, hashPassword } from "../libs/password";
@@ -76,6 +76,13 @@ export async function login(user: LoginDto): Promise<TokenResponse> {
         throw new Exception({ message: 'Username or password is not valid', statusCode: 401 })
     }
 
+    const isInAnotherSession = await checkLoginSession(user.email)
+    if(isInAnotherSession) {
+        throw new Exception({ message: "You are not allowed to log in from multiple browsers.", statusCode: 403 })
+    } else {
+        saveLoginSession(user.email);
+    }
+
     // generate access token
     const payload = {
         sub: account.id,
@@ -83,7 +90,16 @@ export async function login(user: LoginDto): Promise<TokenResponse> {
     }
 
     const JWT_SECRET = process.env.JWT_SECRET as string
-    const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' })
+    const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' })
 
     return { accessToken }
+}
+
+export async function logout(email: string): Promise<MessageDto> {
+    const isActive = await checkLoginSession(email)
+    if(isActive) {
+        clearLoginSession(email)
+    }
+
+    return { message: "User logout successfully !" }
 }

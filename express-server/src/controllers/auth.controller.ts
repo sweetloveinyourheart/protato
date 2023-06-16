@@ -56,6 +56,20 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TokenResponse'
+ * 
+* /auth/logout:
+ *   delete:
+ *     summary: Logout and clear active session
+ *     tags: [Auth]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Logout result in message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MessageDto'
  */
 
 import { NextFunction, Request, Response } from "express";
@@ -111,6 +125,20 @@ export async function validateAccount(request: Request, response: Response, next
     const msg = await authServices.validateAccount(body)
 
     return response.status(200).json(msg)
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export async function logout(request: Request, response: Response, next: NextFunction) {
+  try {
+    const user = request.user
+    if(!user) {
+      return response.sendStatus(401)
+    }
+
+    const result = await authServices.logout(user.email)
+    return response.status(200).json(result)
   } catch (error) {
     return next(error)
   }

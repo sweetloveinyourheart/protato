@@ -1,13 +1,4 @@
-import * as redis from 'redis'
-import { SocketUser } from '../sockets/interfaces/user';
-import { MatchDto } from '../dto/match/match.dto';
-
-const client = redis.createClient()
-
-client
-    .connect()
-    .then(() => console.log('Redis connected'))
-    .catch(() => console.log('Connect to redis failed !'))
+import { client } from "..";
 
 export async function storeValidationCode(email: string, code: string) {
     await client.set(email, code);
@@ -23,51 +14,44 @@ export async function checkValidationCode(email: string, code: string) {
     return result
 }
 
-// Socket functions
-export async function joinMatchQueue(socketUser: SocketUser): Promise<SocketUser | null> {
-    const canMakeAMatch = await client.get("matchQueue")
+export async function saveLoginSession(email: string) {
+    const sessionsCache = await client.get("login-session")
+    if (sessionsCache) {
+        const sessions: string[] = JSON.parse(sessionsCache)
+        sessions.push(email)
 
-    // The match can start with 2 player
-    if (canMakeAMatch) {
-        await client.del("matchQueue")
+        await client.set("login-session", JSON.stringify(sessions));
+        await client.expire("login-session", 24 * 60 * 60)
 
-        const opponent = JSON.parse(canMakeAMatch)
-        return opponent
+        return;
     }
 
-    const waiter = JSON.stringify(socketUser)
-    await client.set("matchQueue", waiter)
-    await client.expire("matchQueue", 15 * 60)
-
-    return null
+    await client.set("login-session", JSON.stringify([email]))
+    await client.expire("login-session", 24 * 60 * 60)
 }
 
-export async function leaveMatchQueue(socketUser: SocketUser): Promise<void> {
-    const canMakeAMatch = await client.get("matchQueue")
+export async function checkLoginSession(email: string) {
+    const sessionsCache = await client.get("login-session")
+    if (sessionsCache) {
+        const sessions: string[] = JSON.parse(sessionsCache)
+        const found = sessions.includes(email)
+        if (found) { return true }
 
-    // Check and remove user in queue
-    if (canMakeAMatch) {
-        const user: SocketUser = JSON.parse(canMakeAMatch)
-        if (user.userId === socketUser.userId) {
-            await client.del("matchQueue")
-        }
-    }
-}
-
-export async function storeMatchInfo(match: MatchDto, players: SocketUser[]): Promise<void> {
-    const stringify = JSON.stringify({ players })
-
-    await client.set(match._id.toString(), stringify)
-    await client.expire(match._id.toString(), 15 * 60)
-}
-
-export async function getMatchInfo(matchId: string): Promise<{ players: SocketUser[] } | null> {
-    const matchStringify = await client.get(matchId)
-
-    if (matchStringify) {
-        const matchInfo: { players: SocketUser[] } = JSON.parse(matchStringify)
-        return matchInfo
+        return false
     }
 
-    return null
+    return false
+}
+
+export async function clearLoginSession(email: string) {
+    const sessionsCache = await client.get("login-session")
+    if (sessionsCache) {
+        const sessions: string[] = JSON.parse(sessionsCache)
+        const found = sessions.findIndex(v => v === email)
+        sessions.splice(found, 1);
+
+        await client.set("login-session", JSON.stringify(sessions));
+
+        if (found) { return true }
+    }
 }

@@ -1,17 +1,13 @@
-import { getMatchInfo } from "../../libs/cache";
+import { getMatchInfo } from "../../libs/socket";
 import dgram from 'node:dgram';
-import { InitMatchData } from "../interfaces/match-init";
+import { InitMatchData } from "../interfaces/match";
 import { MessagePayload, ServerEventType } from "../payload/message.payload";
 
 export async function initMatch(server: dgram.Socket, matchId: string) {
     const storedMatch = await getMatchInfo(matchId)
     if (!storedMatch) return;
 
-    const matchData: InitMatchData = {
-        playersPos: storedMatch.players.map((player, index) => {
-            return { userId: player.userId, xPos: 0 + index, yPos: 0 + index }
-        })
-    }
+    const matchData: InitMatchData = storedMatch.matchConfigs
 
     const payload: MessagePayload = {
         data: matchData,

@@ -6,10 +6,9 @@ import MatchModel from "../models/match.model";
 
 export async function createSingleMatch(userId: string): Promise<MatchDto> {
     const newMatch = await MatchModel.create({
-        results: [
-            { player: userId, score: 0 }
-        ],
-        players: [userId]
+        results: [{ player: userId, score: 0 }],
+        players: [userId],
+        createdAt: new Date()
     })
     return newMatch
 }
@@ -22,7 +21,8 @@ export async function createMultipleMatch(players: string[]): Promise<MatchDto> 
 
     const newMatch = await MatchModel.create({
         results,
-        players
+        players,
+        createdAt: new Date()
     })
     return newMatch
 }
@@ -62,7 +62,7 @@ export async function saveMatchHistory(matchId: string, userId: string, matchRes
 
     await MatchModel.updateOne(
         { _id: matchId, 'results.player': userId },
-        { $set: { 'results.$.score': matchResult.score }, victory: matchResult.victory }
+        { $set: { 'results.$.score': matchResult.score, 'results.$.victory': matchResult.victory } }
     )
 
     return { message: 'Match result saved !' }

@@ -1,15 +1,16 @@
 export enum ClientEventType {
     FindMatch = "FindMatch",
     InitMatch = "InitMatch",
-    LeaveQueue = "LeaveQueue", 
-    Move = "Move",
-    Attack = "Attack"
+    LeaveQueue = "LeaveQueue",
+    UpdatePlayerState = "UpdatePlayerState",
+    ApplicationQuit = "ApplicationQuit"
 }
 
 export enum ServerEventType {
     MatchJoined = "MatchJoined",
     MatchCreated = "MatchCreated",
-    PlayerMoved = "PlayerMoved"
+    PlayerStateUpdated = "PlayerStateUpdated",
+    UserLeft = "UserLeft"
 }
 
 export interface MessagePayload {

@@ -978,9 +978,10 @@ MonoBehaviour:
   isAttacking: 0
   isFacingRight: 1
   moveSpeed: 5
-  healthBar: {fileID: 0}
   maxHp: 100
+  healthBar: {fileID: 0}
   dieEffect: {fileID: 0}
+  userId: 
 --- !u!1 &2585771402632435556
 GameObject:
   m_ObjectHideFlags: 0

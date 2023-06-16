@@ -755,7 +755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 1662796437}
   matchHistoryPrefab: {fileID: 7152730760721789935, guid: 69ffa2a6154bf4969a7c824dbf558cad, type: 3}
-  offset: 50
+  offset: 100
 --- !u!1 &1189886303
 GameObject:
   m_ObjectHideFlags: 0

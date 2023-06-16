@@ -3,18 +3,18 @@ using System.Collections;
 
 public class Character : MonoBehaviour
 {
-    [HideInInspector] public bool isAttacking = false;
+    public bool isAttacking = false;
     [HideInInspector] public bool isFacingRight = true;
 
-    [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float maxHp = 100f;
-    [SerializeField] CharacterHealthbar healthBar;
-    [SerializeField] GameObject dieEffect;
+    [SerializeField] protected float moveSpeed = 5f;
+    [SerializeField] protected float maxHp = 100f;
+    [SerializeField] protected CharacterHealthbar healthBar;
+    [SerializeField] protected GameObject dieEffect;
 
-    private Rigidbody2D rb;
-    private Animator animator;
-    private float attackSpeed = 0.3f;
-    private float hp;
+    protected Rigidbody2D rb;
+    protected Animator animator;
+    protected float attackSpeed = 0.3f;
+    protected float hp;
 
     private void Start()
     {
@@ -76,7 +76,7 @@ public class Character : MonoBehaviour
         animator.SetBool("isRunning", isMoving);
     }
 
-    private IEnumerator Attack()
+    protected virtual IEnumerator Attack()
     {
         isAttacking = true;
         animator.SetBool("isAttacking", true);
@@ -87,7 +87,7 @@ public class Character : MonoBehaviour
         isAttacking = false;
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         hp -= damage;
         healthBar.UpdateHealthbar(hp, maxHp);
@@ -98,7 +98,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         Instantiate(dieEffect, transform.position, Quaternion.identity);
         GameManager.Instance.PlayerDead();

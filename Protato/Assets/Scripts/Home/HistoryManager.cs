@@ -52,7 +52,6 @@ public class HistoryManager : MonoBehaviour
                 MatchListData matchData = new MatchListData();
                 matchData._id = node["_id"];
                 matchData.createdAt = node["createdAt"];
-                matchData.victory = node["victory"].AsBool;
 
                 JSONArray resultsArray = node["results"].AsArray;
                 List<MatchListResult> results = new List<MatchListResult>();
@@ -62,6 +61,7 @@ public class HistoryManager : MonoBehaviour
                     MatchListResult result = new MatchListResult();
                     result.player = resultNode["player"];
                     result.score = resultNode["score"].AsInt;
+                    result.victory = resultNode["victory"].AsBool;
 
                     results.Add(result);
                 }

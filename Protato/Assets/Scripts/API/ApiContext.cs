@@ -180,4 +180,34 @@ public class ApiContext : MonoBehaviour
             callback(new ApiResponse(data));
         }
     }
+
+    public IEnumerator Delete(string route, Action<ApiResponse> callback)
+    {
+        string url = BaseUrl + route;
+
+        // Create a UnityWebRequest object with the GET method
+        UnityWebRequest request = new UnityWebRequest(url, "Delete");
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + accessToken);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        // Send the request and wait for a response
+        yield return request.SendWebRequest();
+
+        // Check if there were any errors
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            // If there was an error, parse the response data to get the error message
+            JSONNode data = JSON.Parse(request.downloadHandler.text);
+            string errorMessage = data["message"] ? data["message"] : "An error occurred !";
+
+            callback(new ApiResponse(errorMessage));
+        }
+        else
+        {
+            JSONNode data = JSON.Parse(request.downloadHandler.text);
+            // Request was successful
+            callback(new ApiResponse(data));
+        }
+    }
 }

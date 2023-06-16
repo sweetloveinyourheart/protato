@@ -17,12 +17,18 @@ public class Axe : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         Monster monster = collision.gameObject.GetComponent<Monster>();
         if (monster)
         {
             monster.TakeDamage(damage);
+        }
+
+        Player player = collision.gameObject.GetComponent<Player>();
+        if (player)
+        {
+            player.TakeDamage(damage);
         }
     }
 

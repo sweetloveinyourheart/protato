@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Environment
+  - Ally
   layers:
   - Default
   - TransparentFX

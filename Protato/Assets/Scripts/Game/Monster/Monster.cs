@@ -7,17 +7,18 @@ public class Monster : MonoBehaviour
 
     [SerializeField] float maxHp = 100f;
     [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float damage = 5f;
+    [SerializeField] protected float damage = 5f;
 
-    [SerializeField] GameObject dieEffect;
     [SerializeField] MonsterHealthbar healthBar;
-    [SerializeField] Supply supply;
+
+    [SerializeField] protected GameObject dieEffect;
+    [SerializeField] protected Supply supply;
 
     Rigidbody2D rb;
     bool isMoving;
-    bool isAttacking = false; // Flag indicating whether the monster is currently attacking
+    protected bool isAttacking = false; // Flag indicating whether the monster is currently attacking
 
-    bool canAttacking = false; // Flag indicating whether the monster can attack the player
+    protected bool canAttacking = false; // Flag indicating whether the monster can attack the player
     float hp = 100f;
     Character character;
 
@@ -65,7 +66,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackPlayer()
+    protected virtual IEnumerator AttackPlayer()
     {
         isAttacking = false;
         character.TakeDamage(damage);
@@ -79,7 +80,7 @@ public class Monster : MonoBehaviour
         isMoving = false; // Re-enable Move
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         Instantiate(dieEffect, transform.position, Quaternion.identity);
 

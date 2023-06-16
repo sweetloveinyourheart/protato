@@ -1,32 +1,41 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
-using System.Threading.Tasks;
 
 public class Player : Character
 {
     public string userId;
 
-    private async void FixedUpdate()
+    private bool isDead = false;
+
+    private void FixedUpdate()
     {
-        await SendPosition();
+        if (!isDead)
+        {
+            JSONObject movementObj = new JSONObject();
+            movementObj["matchId"] = MatchManager.Instance.matchId;
+            movementObj["userId"] = userId;
+            movementObj["xPos"] = transform.position.x;
+            movementObj["yPos"] = transform.position.y;
+            movementObj["isAttacking"] = isAttacking;
+            movementObj["hp"] = hp;
+
+            SocketContext.Instance.SendMessage(ClientEvent.UpdatePlayerState, movementObj);
+        }
+
     }
 
-    private async Task<bool> SendPosition()
+    protected override void Die()
     {
-        JSONObject movementObj = new JSONObject();
-        movementObj["matchId"] = MatchManager.Instance.matchId;
-        movementObj["xPos"] = transform.position.x;
-        movementObj["yPos"] = transform.position.y;
-        movementObj["userId"] = userId;
-
-        await SocketContext.Instance.SendMessageAsync(ClientEvent.Move, movementObj);
-        return true;
+        Instantiate(dieEffect, transform.position, Quaternion.identity);
+        MultiplayerManager.Instance.PlayerDead();
+        StartCoroutine(GoSleep());
     }
 
-    private IEnumerator Attack()
+    private IEnumerator GoSleep()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+        gameObject.SetActive(false);
+        isDead = true;
     }
 }

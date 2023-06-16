@@ -12,8 +12,8 @@ class ClientEvent
     readonly public static string FindMatch = "FindMatch";
     readonly public static string LeaveQueue = "LeaveQueue";
     readonly public static string InitMatch = "InitMatch";
-    readonly public static string Move = "Move";
-    readonly public static string Attack = "Attack";
+    readonly public static string UpdatePlayerState = "UpdatePlayerState";
+    readonly public static string ApplicationQuit = "ApplicationQuit";
 }
 
 [Serializable]
@@ -21,7 +21,8 @@ class ServerEvent
 {
     readonly public static string MatchJoined = "MatchJoined";
     readonly public static string MatchCreated = "MatchCreated";
-    readonly public static string PlayerMoved = "PlayerMoved";
+    readonly public static string PlayerStateUpdated = "PlayerStateUpdated";
+    readonly public static string UserLeft = "UserLeft";
 }
 
 public class SocketContext : MonoBehaviour
@@ -30,7 +31,6 @@ public class SocketContext : MonoBehaviour
     public int serverPort = 3333;
 
     [HideInInspector] public UdpClient udpClient;
-    [HideInInspector] public IPEndPoint remoteIpEndPoint;
 
     public static SocketContext Instance { get; private set; }
 
@@ -45,59 +45,81 @@ public class SocketContext : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
-        remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-        udpClient = new UdpClient();
-        udpClient.Connect(serverIP, serverPort);
 
         // Ensure the instance persists between scene loads
         DontDestroyOnLoad(gameObject);
     }
 
-    public async Task<bool> SendMessageAsync(string eventType, JSONObject data)
+    public void ConnectToServer()
     {
-        // Create a JSON object with matchId and playerData
-        JSONObject payload = new JSONObject();
-        payload["type"] = eventType;
-        payload["data"] = data;
+        udpClient = new UdpClient();
+        udpClient.Connect(serverIP, serverPort);
+    }
 
-        string json = payload.ToString();
-
-        // Convert the JSON to bytes and send it to the server
-        byte[] buffer = System.Text.Encoding.UTF8.GetBytes(json);
-        await udpClient.SendAsync(buffer, buffer.Length);
-        return true;
+    public void DisconnectToServer()
+    {
+        udpClient = null;
+        udpClient?.Close();
     }
 
     public void SendMessage(string eventType, JSONObject data)
     {
-        // Create a JSON object with matchId and playerData
-        JSONObject payload = new JSONObject();
-        payload["type"] = eventType;
-        payload["data"] = data;
+        if (udpClient != null)
+        {
+            // Create a JSON object with matchId and playerData
+            JSONObject payload = new JSONObject();
+            payload["type"] = eventType;
+            payload["data"] = data;
 
-        string json = payload.ToString();
+            string json = payload.ToString();
 
-        // Convert the JSON to bytes and send it to the server
-        byte[] buffer = System.Text.Encoding.UTF8.GetBytes(json);
-        udpClient.Send(buffer, buffer.Length);
+            // Convert the JSON to bytes and send it to the server
+            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(json);
+            udpClient.Send(buffer, buffer.Length);
+        }
     }
 
     public async Task<JSONNode> ReceiveMessageAsync()
     {
-        try
+        if (udpClient != null)
         {
-            var x = await udpClient.ReceiveAsync();
-            byte[] receiveBytes = x.Buffer;
-            string returnData = Encoding.ASCII.GetString(receiveBytes);
+            try
+            {
+                var x = await udpClient.ReceiveAsync();
+                byte[] receiveBytes = x.Buffer;
+                string returnData = Encoding.ASCII.GetString(receiveBytes);
 
-            //Debug.Log("This is the message you received: " + returnData);
-            return JSON.Parse(returnData); ;
+                //Debug.Log("This is the message you received: " + returnData);
+                return JSON.Parse(returnData);
+            }
+            catch
+            {
+                return null;
+            }
         }
-        catch (Exception e)
+
+        return null;
+    }
+
+    private void OnApplicationQuit()
+    {
+        if(MatchManager.Instance != null)
         {
-            Debug.LogError(e.ToString());
-            return null;
+            JSONObject payload = new JSONObject();
+            payload["matchId"] = MatchManager.Instance.matchId;
+            payload["userId"] = ApiContext.Instance.user._id;
+
+            SendMessage(ClientEvent.ApplicationQuit, payload);
         }
+
+        if(ApiContext.Instance != null)
+        {
+            if (ApiContext.Instance.user != null)
+            {
+                StartCoroutine(ApiContext.Instance.Delete("/auth/logout", (res) => { }));
+            }
+        }
+
+        udpClient?.Close();
     }
 }

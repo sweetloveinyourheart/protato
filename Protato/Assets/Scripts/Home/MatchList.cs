@@ -28,7 +28,7 @@ public class MatchList : MonoBehaviour
 
             // Write match result
             MatchListResult userRs = data.results.Find(rs => rs.player == userId);
-            newMatchHistory.ShowData(data._id, data.victory, userRs.score);
+            newMatchHistory.ShowData(data._id, userRs.victory, userRs.score);
 
             content.sizeDelta = new Vector2(content.sizeDelta.x, contentHeight);
             contentHeight += offset;

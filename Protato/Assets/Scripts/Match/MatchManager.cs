@@ -7,6 +7,7 @@ using UnityEngine.SocialPlatforms.Impl;
 public class MatchManager : MonoBehaviour
 {
     [SerializeField] public string matchId;
+
     public static MatchManager Instance { get; private set; }
 
     // Start is called before the first frame update

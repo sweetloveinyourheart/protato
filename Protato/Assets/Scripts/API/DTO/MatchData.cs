@@ -15,6 +15,7 @@ public class ResultData
 {
     public PlayerData player { get; set; }
     public int score { get; set; }
+    public bool victory { get; set; }
 }
 
 [Serializable]
@@ -33,13 +34,13 @@ public class MatchListResult
 {
     public string player { get; set; }
     public int score { get; set; }
+    public bool victory { get; set; }
 }
 
 [Serializable]
 public class MatchListData
 {
     public string _id { get; set; }
-    public bool victory { get; set; }
     public List<string> players { get; set; }
     public List<MatchListResult> results { get; set; }
     public DateTime createdAt { get; set; }

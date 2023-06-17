@@ -10,6 +10,7 @@ COPY . .
 
 RUN yarn build
 
+EXPOSE 3333/udp
 EXPOSE 6789
 
 CMD ["yarn", "start"]

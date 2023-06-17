@@ -19,6 +19,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 6789:6789
+      - 3333:3333/udp
+
     environment:
       - PORT=6789
       - UDP_SERVER_PORT=3333

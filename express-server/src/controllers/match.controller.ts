@@ -4,7 +4,7 @@
  *   name: Match
  *   description: The match managing API
  
- * /match/get-history:
+ * /api/match/get-history:
  *   get:
  *     security:
  *       - BearerAuth: []
@@ -18,7 +18,7 @@
  *             schema:
  *               $ref: '#/components/schemas/MatchDto'
 
- * /match/get-by-id/{matchId}:
+ * /api/match/get-by-id/{matchId}:
  *   get:
  *     security:
  *       - BearerAuth: []
@@ -39,7 +39,7 @@
  *             schema:
  *               $ref: '#/components/schemas/MatchDto'
 
- * /match/single-player/create:
+ * /api/match/single-player/create:
  *   post:
  *     security:
  *       - BearerAuth: []
@@ -53,7 +53,7 @@
  *             schema:
  *               $ref: '#/components/schemas/MatchDto'
  * 
- * /match/save-result/{matchId}:
+ * /api/match/save-result/{matchId}:
  *   put:
  *     security:
  *       - BearerAuth: []

@@ -4,7 +4,7 @@
  *   name: User
  *   description: The user managing API
 
- * /user/profile:
+ * /api/user/profile:
  *   get:
  *     security:
  *       - BearerAuth: []

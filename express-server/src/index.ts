@@ -41,7 +41,7 @@ const specs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routers
-app.use('/', routers)
+app.use('/api', routers)
 
 // Add an error handling middleware
 app.use(GlobalException);

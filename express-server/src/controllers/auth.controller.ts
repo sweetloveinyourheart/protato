@@ -3,7 +3,7 @@
  * tags:
  *   name: Auth
  *   description: The auth managing API
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Register new account
  *     tags: [Auth]
@@ -21,7 +21,7 @@
  *             schema:
  *               $ref: '#/components/schemas/MessageDto'
  *
- * /auth/verify-account:
+ * /api/auth/verify-account:
  *   post:
  *     summary: Verify account
  *     tags: [Auth]
@@ -39,7 +39,7 @@
  *             schema:
  *               $ref: '#/components/schemas/MessageDto'
  * 
- * /auth/login:
+ * /api/auth/login:
  *   post:
  *     summary: Login to your account
  *     tags: [Auth]
@@ -57,7 +57,7 @@
  *             schema:
  *               $ref: '#/components/schemas/TokenResponse'
  * 
-* /auth/logout:
+ * /api/auth/logout:
  *   delete:
  *     summary: Logout and clear active session
  *     tags: [Auth]

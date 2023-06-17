@@ -11,6 +11,8 @@ const PORT = Number(process.env.UDP_SERVER_PORT || 3333);
 server.on('message', (message, remote) => {
     const { address, port } = remote
 
+    console.log("Received message by ", address + " " + port);
+
     // Parse the received message
     const receivedData: MessagePayload = JSON.parse(message.toString());
     const type = receivedData.type

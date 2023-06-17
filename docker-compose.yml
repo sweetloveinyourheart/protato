@@ -31,11 +31,10 @@ services:
       - REDIS_PORT=6379
 
     depends_on:
-      depends_on:
-        db:
-          condition: service_started
-        redis:
-          condition: service_started
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
 
     networks:
       - shared-network

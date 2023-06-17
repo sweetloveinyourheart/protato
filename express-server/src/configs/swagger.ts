@@ -7,10 +7,10 @@ export const options: Options = {
             title: "Protato Express API with Swagger",
             version: "0.1.0",
             description:
-                "This is a simple CRUD API application made with Express and documented with Swagger",
+                "CRUD API application made with Express and documented with Swagger",
             contact: {
                 name: "Protato Game",
-                url: "https://logrocket.com"
+                url: "https://sweetdev.fun/"
             },
         },
         components: {

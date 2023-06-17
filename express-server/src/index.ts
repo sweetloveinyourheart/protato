@@ -38,7 +38,7 @@ mongoose
 
 // Config swagger document
 const specs = swaggerJsdoc(swaggerOptions);
-app.use('/api', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routers
 app.use('/', routers)

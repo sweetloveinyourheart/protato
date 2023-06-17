@@ -1,18 +1,15 @@
 const express = require('express');
-const compression = require('compression');
 const path = require('path');
 
 const app = express();
 const port = 3000; // Set the desired port number
 
-app.use(compression()); // Enable Brotli compression
-
 // Serve static files from the 'build' directory
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 // Define a route to serve the WebGL files
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
 });
 
 // Start the server

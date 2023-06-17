@@ -67,7 +67,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
-      - 3333:3333/udp # Expose UDP port 3333
+      
     depends_on:
       server:
         condition: service_started

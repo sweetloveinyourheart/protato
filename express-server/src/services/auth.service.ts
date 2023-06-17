@@ -76,12 +76,12 @@ export async function login(user: LoginDto): Promise<TokenResponse> {
         throw new Exception({ message: 'Username or password is not valid', statusCode: 401 })
     }
 
-    const isInAnotherSession = await checkLoginSession(user.email)
-    if(isInAnotherSession) {
-        throw new Exception({ message: "You are not allowed to log in from multiple browsers.", statusCode: 403 })
-    } else {
-        saveLoginSession(user.email);
-    }
+    // const isInAnotherSession = await checkLoginSession(user.email)
+    // if(isInAnotherSession) {
+    //     throw new Exception({ message: "You are not allowed to log in from multiple browsers.", statusCode: 403 })
+    // } else {
+    //     saveLoginSession(user.email);
+    // }
 
     // generate access token
     const payload = {

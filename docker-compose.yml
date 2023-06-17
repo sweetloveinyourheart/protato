@@ -3,18 +3,18 @@ version: '3.8'
 services:
   client:
     hostname: client
-    build: 
+    build:
       context: protato-web-client
       dockerfile: Dockerfile
     ports:
       - 3000:3000
-      
+
     networks:
       - shared-network
 
   server:
     hostname: server
-    build: 
+    build:
       context: express-server
       dockerfile: Dockerfile
     ports:
@@ -29,10 +29,14 @@ services:
       - EMAIL_PASSWORD=<YOUR_EMAIL_SERVICE_PASS>
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      
+
     depends_on:
-      - redis
-      - db
+      depends_on:
+        db:
+          condition: service_started
+        redis:
+          condition: service_started
+
     networks:
       - shared-network
 
@@ -65,13 +69,18 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
-      - 3333:3333/udp  # Expose UDP port 3333
+      - 3333:3333/udp # Expose UDP port 3333
+    depends_on:
+      server:
+        condition: service_started
+
     networks:
       - shared-network
 
 volumes:
   redis-data:
   mongo-data:
+
 
 networks:
   shared-network:

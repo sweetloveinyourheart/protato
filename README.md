@@ -9,21 +9,21 @@ Built with:
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+To install and run the application, follow the steps below:
 
-1. Clone the repo
+1. Clone the repository to your local machine:
    ```sh
    git clone https://github.com/Sweetloveinyourheart/protato
    ```
-2. Go to server folder
+2. Go to server folder:
    ```sh
    cd express-server
    ```
-3. Build with docker-compose
+3. Build the application using docker-compose:
    ```sh
    docker-compose build
    ```
-3. Run application with docker-compose
+3. Run the application using docker-compose:
    ```sh
    docker-compose up -d
    ```
